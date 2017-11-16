@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+
+/**
+ * Aside function to supervise rendering. Dismissable.
+ * **/
 public class FPSCounter : MonoBehaviour {
     public Text text;
 	// Use this for initialization

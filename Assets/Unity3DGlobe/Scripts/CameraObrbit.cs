@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/**
+ * Control main camera postion.
+ * **/
+
 public class CameraObrbit : MonoBehaviour {
     public float MinDistance = 1.0f;
     public float MaxDistance = 1.3f;
@@ -11,15 +15,34 @@ public class CameraObrbit : MonoBehaviour {
     Vector2 rotation;
     Vector2 target =new Vector2(Mathf.PI* 3 / 2, Mathf.PI / 6 );
     Vector2 targetOnDown ;
+
+
+	public Camera pcam;
+
+	private int countCaptures;
+
+
     // Use this for initialization
     void Start () {
         distanceTarget = transform.position.magnitude;
+		pcam = GameObject.Find("preCam").GetComponent<Camera>();
+		countCaptures = 0;
 
 	}
     bool down = false;
     // Update is called once per frame
     void Update()
     {
+		if (Input.GetKeyDown ("p")) {
+			Debug.Log ("Capturing view from camera");
+			Camera cam = Camera.Instantiate (pcam);
+			cam.CopyFrom (Camera.main);
+			cam.name = "preCam_" + countCaptures;
+			cam.rect=new Rect (countCaptures*0.2f, 0, 0.2f,0.2f);
+			cam.enabled = true;
+			countCaptures++;
+
+		}
         if (Input.GetMouseButtonDown(0))
         {
             down = true;

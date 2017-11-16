@@ -1,6 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+/**
+ * Load json data and send it to the DataVisualizer
+ * */
+
 public class DataLoader : MonoBehaviour {
     public DataVisualizer Visualizer;
 	// Use this for initialization
