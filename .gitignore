@@ -11,3 +11,5 @@ Assets/AssetStoreTools.meta
 *.userprefs
 *.unityproj
 *.meta
+win_build*
+macos_build*
