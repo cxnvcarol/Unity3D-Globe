@@ -7,15 +7,22 @@ public class NavManager : MonoBehaviour {
 	//TODO: React to: p,j,k,l,c,numbers.
 	public bool pathMode;
 	private DataVisualizer datavisualizer;
+	private int currentYearIndex;
+	private int currentCaptureIndex;
+	private CameraObrbit maincamScript;
+
 	void Start () {
 		pathMode = false;
 		datavisualizer=GameObject.Find ("DataVisualizer").GetComponent<DataVisualizer>();
+		maincamScript=GameObject.Find ("Main Camera").GetComponent<CameraObrbit>();
+		currentYearIndex = 0;
+		currentCaptureIndex = 0;
 	}
    
 	void Update () {
 		if (Input.GetKeyDown ("m")) {
-			Debug.Log ("Changing mode");
 			pathMode = !pathMode;
+			Debug.Log ("Changing mode to "+(pathMode?"path navigation":"year navigation"));
 
 			if (pathMode) {
 
@@ -31,15 +38,39 @@ public class NavManager : MonoBehaviour {
 		if (Input.GetKeyDown ("j")) {
 			Debug.Log ("going left");
 			if (!pathMode) {
-				datavisualizer.ActivateSeries (0);
+				if (currentYearIndex > 0) {
+					currentYearIndex--;
+				}
+				datavisualizer.ActivateSeries (currentYearIndex);
 			}
-			
+			else {
+				
+
+				if (currentCaptureIndex > 0) {
+					currentCaptureIndex--;
+				}
+				maincamScript.setCaptureToView (currentCaptureIndex);
+				Debug.Log ("display the previous capture:"+currentCaptureIndex);
+			}
 			
 		}
 		else if (Input.GetKeyDown ("l")) {
 			Debug.Log ("going right");
 			if (!pathMode) {
-				datavisualizer.ActivateSeries (2);
+				if (currentYearIndex <2) {
+					currentYearIndex++;
+				}
+				datavisualizer.ActivateSeries (currentYearIndex);
+			}
+			else {
+
+
+				if (currentCaptureIndex < maincamScript.getCountCaptures()-1) {
+					currentCaptureIndex++;
+				}
+				maincamScript.setCaptureToView (currentCaptureIndex);
+
+				Debug.Log ("display the next capture:"+currentCaptureIndex);
 			}
 		}
 

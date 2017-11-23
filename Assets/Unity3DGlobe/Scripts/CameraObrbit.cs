@@ -27,7 +27,7 @@ public class CameraObrbit : MonoBehaviour {
 	Vector2 targetOnDown ;
 
 	private Country[]  countries;
-
+	//private List<Camera> captures;
 
 	Camera pcam;
 
@@ -101,6 +101,8 @@ public class CameraObrbit : MonoBehaviour {
 			cam.enabled = true;
 			countCaptures++;
 
+
+
 		}
         if (Input.GetMouseButtonDown(0))
         {
@@ -129,6 +131,15 @@ public class CameraObrbit : MonoBehaviour {
         }
 
 		distanceTarget -= Input.GetAxis("Mouse ScrollWheel");
+
+
+		//TODO:: Allow middle values for the zoom!
+		if (Input.GetKeyDown ("i")) {
+			distanceTarget = MinDistance;
+		} 
+		else if (Input.GetKeyDown ("k")) {//going to Colombia
+			distanceTarget = MaxDistance;
+		} 
 		distanceTarget = Mathf.Clamp(distanceTarget, MinDistance, MaxDistance);
 
 
@@ -136,13 +147,13 @@ public class CameraObrbit : MonoBehaviour {
 		if (Input.GetKeyDown ("c")) {//going to Colombia
 			GoTo("Colombia");
 		} 
-		if (Input.GetKeyDown ("n")) {//going to Colombia
+		if (Input.GetKeyDown ("n")) {
 			GoTo("Nigeria");
 		} 
-		if (Input.GetKeyDown ("g")) {//going to Colombia
+		if (Input.GetKeyDown ("g")) {
 			GoTo("Germany");
 		} 
-		if (Input.GetKeyDown ("a")) {//going to Colombia
+		if (Input.GetKeyDown ("a")) {//going to unknown
 			GoTo("A");
 		} 
 
@@ -158,4 +169,14 @@ public class CameraObrbit : MonoBehaviour {
         transform.position = position;
         transform.LookAt(Vector3.zero);
     }
+
+	public int getCountCaptures(){
+		return countCaptures;
+	}
+
+	public void setCaptureToView(int index)
+	{
+
+		//TODO.. Copy camera settings to the main camera!
+	}
 }
