@@ -6,8 +6,10 @@ public class NavManager : MonoBehaviour {
 
 	//TODO: React to: p,j,k,l,c,numbers.
 	public bool pathMode;
+	private DataVisualizer datavisualizer;
 	void Start () {
 		pathMode = false;
+		datavisualizer=GameObject.Find ("DataVisualizer").GetComponent<DataVisualizer>();
 	}
    
 	void Update () {
@@ -26,6 +28,28 @@ public class NavManager : MonoBehaviour {
 
 		}
 
+		if (Input.GetKeyDown ("j")) {
+			Debug.Log ("going left");
+			if (!pathMode) {
+				datavisualizer.ActivateSeries (0);
+			}
+			
+			
+		}
+		else if (Input.GetKeyDown ("l")) {
+			Debug.Log ("going right");
+			if (!pathMode) {
+				datavisualizer.ActivateSeries (2);
+			}
+		}
+
+		if (Input.GetKeyDown ("i")) {
+			Debug.Log ("zoom in");
+
+		}
+		else if (Input.GetKeyDown ("k")) {
+			Debug.Log ("zoom out");
+		}
 
 
 	}
