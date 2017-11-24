@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 
 [System.Serializable]
@@ -27,7 +28,7 @@ public class CameraObrbit : MonoBehaviour {
 	Vector2 targetOnDown ;
 
 	private Country[]  countries;
-	//private List<Camera> captures;
+	private List<Camera> captures;
 
 	Camera pcam;
 
@@ -48,6 +49,7 @@ public class CameraObrbit : MonoBehaviour {
 		pcam = GameObject.Find("preCam").GetComponent<Camera>();
 		countCaptures = 0;
 		loadCountries ();
+		captures = new List<Camera> ();
 	}
     bool down = false;
     // Update is called once per frame
@@ -99,6 +101,7 @@ public class CameraObrbit : MonoBehaviour {
 			cam.name = "preCam_" + countCaptures;
 			cam.rect=new Rect (countCaptures*0.2f, 0, 0.2f,0.2f);
 			cam.enabled = true;
+			captures.Add (cam);
 			countCaptures++;
 
 
@@ -132,12 +135,11 @@ public class CameraObrbit : MonoBehaviour {
 
 		distanceTarget -= Input.GetAxis("Mouse ScrollWheel");
 
-
 		//TODO:: Allow middle values for the zoom!
 		if (Input.GetKeyDown ("i")) {
 			distanceTarget = MinDistance;
 		} 
-		else if (Input.GetKeyDown ("k")) {//going to Colombia
+		else if (Input.GetKeyDown ("k")) {
 			distanceTarget = MaxDistance;
 		} 
 		distanceTarget = Mathf.Clamp(distanceTarget, MinDistance, MaxDistance);
@@ -176,7 +178,16 @@ public class CameraObrbit : MonoBehaviour {
 
 	public void setCaptureToView(int index)
 	{
-
 		//TODO.. Copy camera settings to the main camera!
+		if (index < countCaptures) {
+			Vector3 pos = captures [index].transform.position;
+
+			target.y = Mathf.Asin (pos.y/pos.magnitude);
+			target.x = Mathf.Atan (pos.x / pos.z);
+			target.x += pos.z<0?Mathf.PI:0;
+
+			distanceTarget = pos.magnitude;
+
+		}
 	}
 }
