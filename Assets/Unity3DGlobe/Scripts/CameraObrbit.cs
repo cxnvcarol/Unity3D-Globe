@@ -46,7 +46,8 @@ public class CameraObrbit : MonoBehaviour {
     // Use this for initialization
     void Start () {
         distanceTarget = transform.position.magnitude;
-		pcam = GameObject.Find("preCam").GetComponent<Camera>();
+		GameObject go = GameObject.Find ("preCam");
+		pcam = go.GetComponent<Camera>();
 		countCaptures = 0;
 		loadCountries ();
 		captures = new List<Camera> ();
@@ -103,9 +104,6 @@ public class CameraObrbit : MonoBehaviour {
 			cam.enabled = true;
 			captures.Add (cam);
 			countCaptures++;
-
-
-
 		}
         if (Input.GetMouseButtonDown(0))
         {
@@ -178,7 +176,6 @@ public class CameraObrbit : MonoBehaviour {
 
 	public void setCaptureToView(int index)
 	{
-		//TODO.. Copy camera settings to the main camera!
 		if (index < countCaptures) {
 			Vector3 pos = captures [index].transform.position;
 
