@@ -20,12 +20,13 @@ public class NavManager : MonoBehaviour {
 	}
    
 	void Update () {
+		if (maincamScript.countryMode)
+			return;
 		if (Input.GetKeyDown ("m")) {
 			pathMode = !pathMode;
 			Debug.Log ("Changing mode to "+(pathMode?"path navigation":"year navigation"));
 
 			if (pathMode) {
-
 				//TODO: render frame on last selected view.
 
 			} else {
@@ -33,6 +34,15 @@ public class NavManager : MonoBehaviour {
 
 			}
 
+		}
+
+		if (Input.GetKeyDown ("r")&&maincamScript.getCountCaptures () >0) {
+			Debug.Log ("Removing capture: "+currentCaptureIndex);
+			maincamScript.removeCaptureView (currentCaptureIndex);
+			if (currentCaptureIndex == maincamScript.getCountCaptures ()) {
+				currentCaptureIndex = maincamScript.getCountCaptures () - 1;
+			}
+				
 		}
 
 		if (Input.GetKeyDown ("j")) {

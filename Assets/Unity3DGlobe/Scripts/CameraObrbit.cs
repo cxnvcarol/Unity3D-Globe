@@ -25,15 +25,18 @@ public class CameraObrbit : MonoBehaviour {
     public Vector2 rotation;
     public Vector2 target =new Vector2(Mathf.PI* 3 / 2, Mathf.PI / 6 );
 	public Vector3 position;
+	public Camera preFabCam; 
+	public GameObject pathContent;
+
 	Vector2 targetOnDown ;
 
 	private Country[]  countries;
 	private List<Camera> captures;
 
-	Camera pcam;
-
 	private int countCaptures;
 
+	public bool countryMode;
+	private string inputCountry;
 
 	void loadCountries()
 	{
@@ -41,16 +44,21 @@ public class CameraObrbit : MonoBehaviour {
 		string json = jsonData.text;
 		countries = JsonHelper.getJsonArray<Country> (json);
 		Debug.Log ("num countries: "+countries.Length);
+		inputCountry = "";
 	}
 
     // Use this for initialization
     void Start () {
         distanceTarget = transform.position.magnitude;
-		GameObject go = GameObject.Find ("preCam");
-		pcam = go.GetComponent<Camera>();
+
 		countCaptures = 0;
 		loadCountries ();
 		captures = new List<Camera> ();
+
+		preFabCam=Instantiate (preFabCam,transform);
+		countryMode = false;
+
+
 	}
     bool down = false;
     // Update is called once per frame
@@ -92,12 +100,36 @@ public class CameraObrbit : MonoBehaviour {
 		distanceTarget = MinDistance;
 	}
 
-
     void Update()
     {
+		if (countryMode) {
+			
+			foreach (char c in Input.inputString) {
+				if ((c == '#')&&inputCountry.Length>0 ) // enter/return
+				{
+					inputCountry=inputCountry.Substring (1);
+					print("User entered: " + inputCountry);
+
+					GoTo (inputCountry);
+
+					inputCountry = "";
+					countryMode = false;
+				}
+				else
+				{
+					inputCountry += c;
+				}
+			}
+			return;
+		}
+		if (Input.GetKeyDown ("q")) {
+			countryMode = true;
+			return;
+		}
 		if (Input.GetKeyDown ("p")) {
 			Debug.Log ("Capturing view from camera");
-			Camera cam = Camera.Instantiate (pcam);
+
+			Camera cam = Camera.Instantiate (preFabCam);
 			cam.CopyFrom (Camera.main);
 			cam.name = "preCam_" + countCaptures;
 			cam.rect=new Rect (countCaptures*0.2f, 0, 0.2f,0.2f);
@@ -105,6 +137,7 @@ public class CameraObrbit : MonoBehaviour {
 			captures.Add (cam);
 			countCaptures++;
 		}
+
         if (Input.GetMouseButtonDown(0))
         {
             down = true;
@@ -143,21 +176,6 @@ public class CameraObrbit : MonoBehaviour {
 		distanceTarget = Mathf.Clamp(distanceTarget, MinDistance, MaxDistance);
 
 
-		//TODO Replace next for real thing:
-		if (Input.GetKeyDown ("c")) {//going to Colombia
-			GoTo("Colombia");
-		} 
-		if (Input.GetKeyDown ("n")) {
-			GoTo("Nigeria");
-		} 
-		if (Input.GetKeyDown ("g")) {
-			GoTo("Germany");
-		} 
-		if (Input.GetKeyDown ("a")) {//going to unknown
-			GoTo("A");
-		} 
-
-
 		distance += (distanceTarget - distance) * 0.2f;
 		rotation.x += (target.x - rotation.x) * 0.1f;
 		rotation.y += (target.y - rotation.y) * 0.1f;
@@ -186,5 +204,17 @@ public class CameraObrbit : MonoBehaviour {
 			distanceTarget = pos.magnitude;
 
 		}
+	}
+
+	public void removeCaptureView(int index)
+	{
+
+		if (index < countCaptures) {
+			Camera ca = captures [index];
+			captures.RemoveAt (index);
+			Destroy (ca.gameObject);
+			countCaptures--;
+		}
+
 	}
 }
