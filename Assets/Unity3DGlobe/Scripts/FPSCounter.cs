@@ -7,6 +7,7 @@ using UnityEngine.UI;
  * **/
 public class FPSCounter : MonoBehaviour {
     public Text text;
+	public static Text textLog;
 	// Use this for initialization
 	void Start () {
         if (!text)
@@ -24,5 +25,10 @@ public class FPSCounter : MonoBehaviour {
             text.text = "FPS:"+framesCount;
             framesCount = 0;
         }
+	}
+
+	public static void logText(string str)
+	{
+		textLog.text = str;
 	}
 }

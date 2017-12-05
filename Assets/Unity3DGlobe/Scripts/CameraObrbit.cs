@@ -79,6 +79,7 @@ public class CameraObrbit : MonoBehaviour {
 	}
 	void GoTo (string country)
 	{
+		//FPSCounter.logText ("goint to "+country);
 		Vector2 coords = getCountryCoordinates (country);
 		if (coords.magnitude==0) {
 			Debug.LogWarning ("no country found:"+country);
