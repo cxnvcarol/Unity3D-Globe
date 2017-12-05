@@ -11,6 +11,9 @@ public class NavManager : MonoBehaviour {
 	private int currentCaptureIndex;
 	private CameraObrbit maincamScript;
 
+
+	public Text logTextLabel;
+
 	void Start () {
 		pathMode = false;
 		datavisualizer=GameObject.Find ("DataVisualizer").GetComponent<DataVisualizer>();
@@ -25,6 +28,7 @@ public class NavManager : MonoBehaviour {
 		if (Input.GetKeyDown ("m")) {
 			pathMode = !pathMode;
 			Debug.Log ("Changing mode to "+(pathMode?"path navigation":"year navigation"));
+			logTextLabel.text = "mode changed"; //TODO... Complete important logging messages
 
 			if (pathMode) {
 				//TODO: render frame on last selected view.

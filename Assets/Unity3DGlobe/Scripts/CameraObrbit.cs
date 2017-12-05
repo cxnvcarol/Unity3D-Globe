@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-
+using UnityEngine.UI;
 
 [System.Serializable]
 public class Country
@@ -27,6 +27,9 @@ public class CameraObrbit : MonoBehaviour {
 	public Vector3 position;
 	public Camera preFabCam; 
 	public GameObject pathContent;
+	public GameObject prefabPanel;
+
+
 
 	Vector2 targetOnDown ;
 
@@ -133,10 +136,26 @@ public class CameraObrbit : MonoBehaviour {
 			Camera cam = Camera.Instantiate (preFabCam);
 			cam.CopyFrom (Camera.main);
 			cam.name = "preCam_" + countCaptures;
-			cam.rect=new Rect (countCaptures*0.2f, 0, 0.2f,0.2f);
+			cam.rect=new Rect (0, 0, 1,1);
 			cam.enabled = true;
 			captures.Add (cam);
+
+
+
+			//HERE FOR STACKED PANEL..
+			GameObject pan = GameObject.Instantiate (prefabPanel);
+
+			pan.transform.parent = pathContent.transform;
+			Vector3 p = pan.transform.position;
+			p.x = countCaptures * 200;
+			pan.transform.position = p;
+			RenderTexture rt = new RenderTexture(256, 256,24, RenderTextureFormat.ARGB32);
+			rt.Create();
+
+			cam.targetTexture = rt;
+			pan.GetComponent<RawImage> ().texture = rt;
 			countCaptures++;
+
 		}
 
         if (Input.GetMouseButtonDown(0))
