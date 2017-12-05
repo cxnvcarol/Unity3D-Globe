@@ -31,10 +31,14 @@ public class CameraObrbit : MonoBehaviour {
 
 
 
+	public Text logTextLabel;
+
+
 	Vector2 targetOnDown ;
 
 	private Country[]  countries;
 	private List<Camera> captures;
+	private List<GameObject> capturesPanels;
 
 	private int countCaptures;
 
@@ -57,6 +61,7 @@ public class CameraObrbit : MonoBehaviour {
 		countCaptures = 0;
 		loadCountries ();
 		captures = new List<Camera> ();
+		capturesPanels = new List<GameObject> ();
 
 		preFabCam=Instantiate (preFabCam,transform);
 		countryMode = false;
@@ -82,12 +87,13 @@ public class CameraObrbit : MonoBehaviour {
 	}
 	void GoTo (string country)
 	{
-		//FPSCounter.logText ("goint to "+country);
 		Vector2 coords = getCountryCoordinates (country);
 		if (coords.magnitude==0) {
 			Debug.LogWarning ("no country found:"+country);
+			logTextLabel.text = country+" not found";
 			return;
 		}
+		logTextLabel.text = "Showing "+country;
 		float lat=coords.x;
 		float lng = coords.y;
 
@@ -131,7 +137,8 @@ public class CameraObrbit : MonoBehaviour {
 			return;
 		}
 		if (Input.GetKeyDown ("p")) {
-			Debug.Log ("Capturing view from camera");
+			//Debug.Log ("Capturing view from camera");
+			//logTextLabel.text = ""
 
 			Camera cam = Camera.Instantiate (preFabCam);
 			cam.CopyFrom (Camera.main);
@@ -144,16 +151,16 @@ public class CameraObrbit : MonoBehaviour {
 
 			//HERE FOR STACKED PANEL..
 			GameObject pan = GameObject.Instantiate (prefabPanel);
-
-			pan.transform.parent = pathContent.transform;
+			//pan.transform.parent = pathContent.transform;
+			pan.transform.SetParent(pathContent.transform);
 			Vector3 p = pan.transform.position;
 			p.x = countCaptures * 200;
 			pan.transform.position = p;
 			RenderTexture rt = new RenderTexture(256, 256,24, RenderTextureFormat.ARGB32);
 			rt.Create();
-
 			cam.targetTexture = rt;
 			pan.GetComponent<RawImage> ().texture = rt;
+			capturesPanels.Add (pan);
 			countCaptures++;
 
 		}
@@ -233,7 +240,20 @@ public class CameraObrbit : MonoBehaviour {
 			Camera ca = captures [index];
 			captures.RemoveAt (index);
 			Destroy (ca.gameObject);
+
+
+			GameObject panel = capturesPanels [index];
+			capturesPanels.RemoveAt (index);
+			Destroy (panel);
+
 			countCaptures--;
+
+			for (int i = index; i < countCaptures; i++) {
+				GameObject pan = capturesPanels [i];
+				Vector3 p = pan.transform.position;
+				p.x -= 200;
+				pan.transform.position = p;
+			}
 		}
 
 	}

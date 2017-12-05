@@ -21,17 +21,33 @@ public class NavManager : MonoBehaviour {
 		currentYearIndex = 0;
 		currentCaptureIndex = 0;
 	}
+	public void refreshPathView ()
+	{
+		maincamScript.setCaptureToView (currentCaptureIndex);	
+	}
+	public void removeCaptureView(int index)
+	{
+		Debug.Log ("Removing capture: "+currentCaptureIndex);
+		logTextLabel.text = "Captured removed";
+		maincamScript.removeCaptureView (currentCaptureIndex);
+		if (currentCaptureIndex == maincamScript.getCountCaptures ()) {
+			currentCaptureIndex = maincamScript.getCountCaptures () - 1;
+		}
+		refreshPathView ();
+	}
    
 	void Update () {
 		if (maincamScript.countryMode)
 			return;
 		if (Input.GetKeyDown ("m")) {
 			pathMode = !pathMode;
-			Debug.Log ("Changing mode to "+(pathMode?"path navigation":"year navigation"));
-			logTextLabel.text = "mode changed"; //TODO... Complete important logging messages
+
+			logTextLabel.text = (pathMode?"path navigation":"year navigation");
+			Debug.Log ("Changing mode to "+logTextLabel.text);
 
 			if (pathMode) {
 				//TODO: render frame on last selected view.
+				refreshPathView();
 
 			} else {
 
@@ -41,11 +57,8 @@ public class NavManager : MonoBehaviour {
 		}
 
 		if (Input.GetKeyDown ("r")&&maincamScript.getCountCaptures () >0) {
-			Debug.Log ("Removing capture: "+currentCaptureIndex);
-			maincamScript.removeCaptureView (currentCaptureIndex);
-			if (currentCaptureIndex == maincamScript.getCountCaptures ()) {
-				currentCaptureIndex = maincamScript.getCountCaptures () - 1;
-			}
+			removeCaptureView (currentCaptureIndex);
+
 				
 		}
 
