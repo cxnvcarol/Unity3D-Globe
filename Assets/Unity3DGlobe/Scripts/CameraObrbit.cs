@@ -42,7 +42,7 @@ public class CameraObrbit : MonoBehaviour {
 	private List<Camera> captures;
 	private List<GameObject> capturesPanels;
 
-	private int countCaptures;
+	public int countCaptures;
 
 	public bool countryMode;
 	private string inputCountry;
@@ -139,12 +139,9 @@ public class CameraObrbit : MonoBehaviour {
 			return;
 		}
 		if (Input.GetKeyDown ("p")) {
-			//Debug.Log ("Capturing view from camera");
-			//logTextLabel.text = ""
-
 			Camera cam = Camera.Instantiate (preFabCam);
 			cam.CopyFrom (Camera.main);
-			cam.name = "preCam_" + countCaptures;
+			//cam.name = "preCam_" + countCaptures;
 			cam.rect=new Rect (0, 0, 1,1);
 			cam.enabled = true;
 			captures.Add (cam);
@@ -153,18 +150,18 @@ public class CameraObrbit : MonoBehaviour {
 
 			//HERE FOR STACKED PANEL..
 			GameObject pan = GameObject.Instantiate (prefabPanel);
-			//pan.transform.parent = pathContent.transform;
 			pan.transform.SetParent(pathContent.transform);
 			Vector3 p = pan.transform.position;
-			p.x = countCaptures * 200;
+			p.x = countCaptures * 200+pathContent.transform.position.x;
 			pan.transform.position = p;
 			RenderTexture rt = new RenderTexture(256, 256,24, RenderTextureFormat.ARGB32);
 			rt.Create();
 			cam.targetTexture = rt;
 			pan.GetComponent<RawImage> ().texture = rt;
 			capturesPanels.Add (pan);
+			setCaptureToView (countCaptures);
 			countCaptures++;
-
+			//todo.. autoscale pathcontent to strecth with panel children
 		}
 
         if (Input.GetMouseButtonDown(0))

@@ -4,7 +4,6 @@ using UnityEngine.UI;
 public class NavManager : MonoBehaviour {
 	// Use this for initialization
 
-	//TODO: React to: p,j,k,l,c,numbers.
 	public bool pathMode;
 	private DataVisualizer datavisualizer;
 	private int currentYearIndex;
@@ -21,19 +20,15 @@ public class NavManager : MonoBehaviour {
 		currentYearIndex = 0;
 		currentCaptureIndex = 0;
 	}
-	public void refreshPathView ()
-	{
-		maincamScript.setCaptureToView (currentCaptureIndex);	
-	}
 	public void removeCaptureView(int index)
 	{
-		Debug.Log ("Removing capture: "+currentCaptureIndex);
-		logTextLabel.text = "Captured removed";
+		logTextLabel.text = "Capture removed";
 		maincamScript.removeCaptureView (currentCaptureIndex);
 		if (currentCaptureIndex == maincamScript.getCountCaptures ()) {
 			currentCaptureIndex = maincamScript.getCountCaptures () - 1;
 		}
-		refreshPathView ();
+		maincamScript.setCaptureToView (currentCaptureIndex);	
+
 	}
    
 	void Update () {
@@ -42,17 +37,14 @@ public class NavManager : MonoBehaviour {
 		if (Input.GetKeyDown ("m")) {
 			pathMode = !pathMode;
 
-			logTextLabel.text = (pathMode?"path navigation":"year navigation");
+			logTextLabel.text = (pathMode?"path mode":"year mode");
 			Debug.Log ("Changing mode to "+logTextLabel.text);
 
 			if (pathMode) {
-				//TODO: render frame on last selected view.
-				refreshPathView();
+				currentYearIndex = maincamScript.getCountCaptures () - 1;
+				maincamScript.setCaptureToView (currentCaptureIndex);	
 
-			} else {
-
-
-			}
+			} //else?
 
 		}
 
@@ -69,6 +61,8 @@ public class NavManager : MonoBehaviour {
 					currentYearIndex--;
 				}
 				datavisualizer.ActivateSeries (currentYearIndex);
+				int theyear = (currentYearIndex == 0) ? 1990 : ((currentYearIndex == 1) ? 1995 : 2000);
+				logTextLabel.text = "Year "+theyear;//burned here same as in GUI
 			}
 			else {
 				
@@ -88,6 +82,8 @@ public class NavManager : MonoBehaviour {
 					currentYearIndex++;
 				}
 				datavisualizer.ActivateSeries (currentYearIndex);
+				int theyear = (currentYearIndex == 0) ? 1990 : ((currentYearIndex == 1) ? 1995 : 2000);
+				logTextLabel.text = "Year "+theyear;//burned here same as in GUI
 			}
 			else {
 
@@ -99,14 +95,6 @@ public class NavManager : MonoBehaviour {
 
 				Debug.Log ("display the next capture:"+currentCaptureIndex);
 			}
-		}
-
-		if (Input.GetKeyDown ("i")) {
-			Debug.Log ("zoom in");
-
-		}
-		else if (Input.GetKeyDown ("k")) {
-			Debug.Log ("zoom out");
 		}
 
 
