@@ -29,6 +29,8 @@ public class CameraObrbit : MonoBehaviour {
 	public GameObject pathContent;
 	public GameObject prefabPanel;
 
+	public GameObject selectorPanel;
+
 
 
 	public Text logTextLabel;
@@ -230,6 +232,12 @@ public class CameraObrbit : MonoBehaviour {
 
 			distanceTarget = pos.magnitude;
 
+
+
+			Vector3 p = selectorPanel.transform.position;
+			p.x = index * 200;
+			selectorPanel.transform.position = p;
+			selectorPanel.SetActive (true);
 		}
 	}
 
