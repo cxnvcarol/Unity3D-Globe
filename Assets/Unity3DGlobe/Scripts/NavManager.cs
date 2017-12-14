@@ -50,7 +50,6 @@ public class NavManager : MonoBehaviour {
 
 		if (Input.GetKeyDown ("r")&&maincamScript.getCountCaptures () >0) {
 			removeCaptureView (currentCaptureIndex);
-
 				
 		}
 
