@@ -152,7 +152,7 @@ public class CameraObrbit : MonoBehaviour {
 			GameObject pan = GameObject.Instantiate (prefabPanel);
 			pan.transform.SetParent(pathContent.transform);
 			Vector3 p = pan.transform.position;
-			p.x = countCaptures * 200+pathContent.transform.position.x;
+			p.x = countCaptures * 200+pathContent.transform.position.x+10;
 			pan.transform.position = p;
 			RenderTexture rt = new RenderTexture(256, 256,24, RenderTextureFormat.ARGB32);
 			rt.Create();

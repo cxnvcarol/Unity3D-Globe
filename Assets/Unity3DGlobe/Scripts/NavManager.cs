@@ -41,7 +41,7 @@ public class NavManager : MonoBehaviour {
 			Debug.Log ("Changing mode to "+logTextLabel.text);
 
 			if (pathMode) {
-				currentYearIndex = maincamScript.getCountCaptures () - 1;
+				currentCaptureIndex = maincamScript.getCountCaptures () - 1;
 				maincamScript.setCaptureToView (currentCaptureIndex);	
 
 			} //else?
