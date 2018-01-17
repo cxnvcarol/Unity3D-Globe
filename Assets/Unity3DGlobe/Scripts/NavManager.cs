@@ -42,7 +42,9 @@ public class NavManager : MonoBehaviour {
 
 			if (pathMode) {
 				currentCaptureIndex = maincamScript.getCountCaptures () - 1;
-				maincamScript.setCaptureToView (currentCaptureIndex);	
+				if (currentCaptureIndex > 0) {
+					maincamScript.setCaptureToView (currentCaptureIndex);
+				}
 
 			} //else?
 

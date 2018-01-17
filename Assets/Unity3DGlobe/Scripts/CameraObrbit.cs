@@ -161,7 +161,6 @@ public class CameraObrbit : MonoBehaviour {
 			capturesPanels.Add (pan);
 			setCaptureToView (countCaptures);
 			countCaptures++;
-			//todo.. autoscale pathcontent to strecth with panel children
 		}
 
         if (Input.GetMouseButtonDown(0))
@@ -194,10 +193,14 @@ public class CameraObrbit : MonoBehaviour {
 
 		//TODO:: Allow middle values for the zoom!
 		if (Input.GetKeyDown ("i")) {
-			distanceTarget = MinDistance;
+			//distanceTarget = MinDistance;
+			distanceTarget -= (MaxDistance-MinDistance)*0.25f;
+			distanceTarget = Mathf.Max (MinDistance, distanceTarget);
 		} 
 		else if (Input.GetKeyDown ("k")) {
-			distanceTarget = MaxDistance;
+			//distanceTarget = MaxDistance;
+			distanceTarget += (MaxDistance-MinDistance)*0.25f;
+			distanceTarget = Mathf.Min (MaxDistance, distanceTarget);
 		} 
 		distanceTarget = Mathf.Clamp(distanceTarget, MinDistance, MaxDistance);
 
@@ -220,7 +223,7 @@ public class CameraObrbit : MonoBehaviour {
 
 	public void setCaptureToView(int index)
 	{
-		if (index < countCaptures) {
+		if (index < countCaptures&&countCaptures>0) {
 			Vector3 pos = captures [index].transform.position;
 
 			target.y = Mathf.Asin (pos.y/pos.magnitude);
@@ -228,8 +231,6 @@ public class CameraObrbit : MonoBehaviour {
 			target.x += pos.z<0?Mathf.PI:0;
 
 			distanceTarget = pos.magnitude;
-
-
 
 			Vector3 p = selectorPanel.transform.position;
 			p.x = index * 200;
