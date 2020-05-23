@@ -1,3 +1,10 @@
+# This version:
+
+This is a modified version of the Unity3-Globe example. This includes additional mini-views for a more thorough data exploration and comparison among countries and is adapted to interact with a Samsung Gear Smartwatch. As described in this paper:
+
+Rupprecht, F., Naranjo, C., Ebert, A., Olakumni, J., & Hamann, B. (2019). When Bigger is Simply Better After all: Natural and Multi-Modal Interaction with Large Displays Using a Smartwatch. In Proceedings of the Twelfth International Conference on Advances in Computer-Human Interactions (ACHI 2019).
+
+
 # Unity3D-Globe
 Unity3D Implementation for Chrome Experiment [WebGL Globe](http://www.chromeexperiments.com/globe) 
 
